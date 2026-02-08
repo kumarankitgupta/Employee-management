@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "superadmin",
+      "email": "superadmin@gmail.com",
+      "password": "9953",
+      "role": "superadmin",
+      "registered_by": 1
+    },
+    {
+      "username": "a",
+      "email": "a@gmail.com",
+      "password": "9953",
+      "role": "admin",
+      "id": 2,
+      "registered_by": 1
+    },
+    {
+      "username": "b",
+      "email": "b@gmail.com",
+      "password": "9953",
+      "role": "emp",
+      "id": 3,
+      "registered_by": 2
+    },
+    {
+      "username": "c",
+      "email": "c@gmail.com",
+      "password": "00000",
+      "role": "emp",
+      "id": 4,
+      "registered_by": 2
+    },
+    {
+      "username": "d",
+      "email": "d@gmail.com",
+      "password": "99993",
+      "role": "emp",
+      "id": 5,
+      "registered_by": 2
+    }
+  ]
+}
