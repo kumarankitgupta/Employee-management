@@ -38,7 +38,47 @@
       "password": "99993",
       "role": "emp",
       "id": 5,
+      "registered_by": 6
+    },
+    {
+      "username": "e",
+      "email": "e@gmail.com",
+      "password": "7878",
+      "role": "admin",
+      "id": 6,
       "registered_by": 2
+    },
+    {
+      "username": "m",
+      "email": "m@gmail.com",
+      "password": "9953",
+      "role": "emp",
+      "id": 7,
+      "registered_by": 2
+    },
+    {
+      "username": "h",
+      "email": "h@gamil.com",
+      "password": "9090",
+      "role": "emp",
+      "id": 8,
+      "registered_by": 2
+    },
+    {
+      "username": "g",
+      "email": "g@gmail.com",
+      "password": "9953",
+      "role": "emp",
+      "id": 9,
+      "registered_by": 2
+    },
+    {
+      "username": "ad",
+      "email": "ad@gmail.com",
+      "password": "00000",
+      "role": "admin",
+      "id": 10,
+      "registered_by": 1
     }
   ]
 }

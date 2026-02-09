@@ -32,11 +32,21 @@ function verifyToken(req, res, next) {
         console.log(error);
         return res.status(401).json({ message: 'Unauthorized' });x
     }
-
 }
 
 app.post('/register', verifyToken , (req, res) => {
+    const registered_by_role = req.user.role;
+
     const { username, email, password, role } = req.body;
+
+    if(registered_by_role === 'emp'){
+        return res.status(400).json({ message: 'You are not authorized to register a user' });
+    }
+
+    if(registered_by_role === 'admin' &&( role === 'superadmin' || role === 'admin')){
+        return res.status(400).json({ message: `You are not authorized to register a ${role}` });
+    }
+
     const user = users.find((user) => (user.email === email && user.username === username));
     if (user) {
         return res.status(400).json({ message: 'User already exists' });
@@ -46,6 +56,7 @@ app.post('/register', verifyToken , (req, res) => {
     console.log(users);
     res.status(201).json({ message: 'User registered successfully' });
 });
+
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -62,6 +73,40 @@ app.post('/login', (req, res) => {
 
     res.status(200).json({ message: 'Login successful' , token , username : user.username, role : user.role , id : user.id  , email : user.email});
 });
+
+
+app.get('/users', verifyToken , (req, res) => {
+    const  user_id = req.user.id;
+    const user_role = req.user.role;
+    let response = null;
+
+    if(user_role === 'superadmin'){
+        response = users.map((user) =>{
+            return {
+                id: user.id,
+                username : user.username,
+                email : user.email,
+                role : user.role,
+                registered_by: users.find((u) => u.id === user.registered_by).username
+            }
+        })
+    }
+
+    if(user_role === 'admin'){
+        response = users.filter((user) => user.registered_by === user_id).
+        map((user) =>{
+            return {
+                id: user.id,
+                username : user.username,
+                email : user.email,
+                role : user.role,
+                registered_by: users.find((u) => u.id === user.registered_by).username
+            }
+        });
+    }
+
+    return res.status(200).json({ data : response || [] });
+})
 
 
 app.listen(3000, () => {

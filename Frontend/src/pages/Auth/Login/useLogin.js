@@ -10,8 +10,11 @@ function useLogin() {
         password: '',
     })
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
     const navigate = useNavigate()
+    
     const handleChange = (e) => {
+        setError('')
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -23,19 +26,19 @@ function useLogin() {
 
     const handleSubmit = async () => {
       if(formData.username.trim() === '' || formData.password.trim() === '') {
-        alert('Please fill in all fields')
+        setError('Please fill in all fields')
         return
       }
 
       try{
         setIsLoading(true)
+        setError('')
         const response = await axios.post(`${apiUrl}/login`, formData)
         syncWithLocalStorage(response.data)
-        alert('Login successful')
         navigate('/')
       } catch (error) {
         console.log(error)
-        alert(error.message || 'Login failed')
+        setError(error.response?.data?.message || error.message || 'Login failed. Please check your credentials.')
       } finally {
         setIsLoading(false)
       }
@@ -45,7 +48,8 @@ function useLogin() {
     formData,
     handleChange,
     handleSubmit,
-    isLoading
+    isLoading,
+    error
   }
 }
 

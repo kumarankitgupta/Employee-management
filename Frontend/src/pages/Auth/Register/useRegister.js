@@ -11,25 +11,33 @@ function useRegister() {
         password: '',
     })
     const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
     const navigate = useNavigate()
+    
     const handleChange = (e) => {
+        setError('')
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     const handleSubmit = async () => {
       if(formData.username.trim() === '' || formData.email.trim() === '' || formData.role.trim() === '' || formData.password.trim() === '') {
-        alert('Please fill in all fields')
+        setError('Please fill in all fields')
+        return
+      }
+
+      if(formData.password.length < 6) {
+        setError('Password must be at least 6 characters long')
         return
       }
 
       try{
         setIsLoading(true)
-          await apiCaller.post(`${apiUrl}/register`, formData)
-          alert('Registration successful')
-          navigate('/login')
+        setError('')
+        await apiCaller.post(`${apiUrl}/register`, formData)
+        navigate('/login')
       } catch (error) {
         console.log(error)
-        alert(error.message || 'Registration failed')
+        setError(error.response?.data?.message || error.message || 'Registration failed. Please try again.')
       } finally {
         setIsLoading(false)
       }
@@ -39,7 +47,8 @@ function useRegister() {
     formData,
     handleChange,
     handleSubmit,
-    isLoading
+    isLoading,
+    error
   }
 }
 
