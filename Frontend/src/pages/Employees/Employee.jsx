@@ -12,9 +12,10 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { RoleBasedWrapper } from '../Auth/Register'
 import useEmployee from './useEmployee'
+import DeactivateButton from './DeactivateButton'
 
 function Employee() {
-  const { loading, employeeData } = useEmployee()
+  const { loading, employeeData, getEmployeeData } = useEmployee()
   const navigate = useNavigate()
 
   return (
@@ -75,6 +76,8 @@ function Employee() {
                       <th style={{ width: '250px' }}>Email</th>
                       <th style={{ width: '120px' }}>Role</th>
                       <th style={{ width: '150px' }}>Registered By</th>
+                      <th style={{ width: '150px' }}>Action</th>
+                      <th style={{ width: '150px' }}>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -114,6 +117,22 @@ function Employee() {
                           <Typography level="body-sm">
                             {employee.registered_by}
                           </Typography>
+                        </td>
+                        <td>
+                          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                            <DeactivateButton employeeId={employee.id} isActive={employee.is_active} refetch={getEmployeeData} />
+                          </Box>
+                        </td>
+                        <td>
+                        <Button
+                              size="sm"
+                              variant="outlined"
+                              color="primary"
+                              onClick={() => navigate(`/update/${employee.id}`)}
+                              disabled={!employee.is_active}
+                            >
+                              Edit
+                            </Button>
                         </td>
                       </tr>
                     ))}

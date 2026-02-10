@@ -25,7 +25,8 @@ function useEmployee() {
 
     return {
         employeeData:employeeData.data,
-        loading
+        loading,
+        getEmployeeData
     }
 
 }

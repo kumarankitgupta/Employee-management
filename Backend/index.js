@@ -51,7 +51,7 @@ app.post('/register', verifyToken , (req, res) => {
     if (user) {
         return res.status(400).json({ message: 'User already exists' });
     }
-    users.push({ username, email, password, role, id: users.length + 1 , registered_by : req.user.id });
+    users.push({ username, email, password, role, id: users.length + 1 , registered_by : req.user.id , is_active : true });
     fs.writeFileSync('./users.json', JSON.stringify({ users: users }, null, 2));
     console.log(users);
     res.status(201).json({ message: 'User registered successfully' });
@@ -65,6 +65,10 @@ app.post('/login', (req, res) => {
 
     if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    if(!user.is_active){
+        return res.status(401).json({ message: 'User is deactivated' });
     }
 
     const token = jwt.sign((
@@ -87,7 +91,8 @@ app.get('/users', verifyToken , (req, res) => {
                 username : user.username,
                 email : user.email,
                 role : user.role,
-                registered_by: users.find((u) => u.id === user.registered_by).username
+                registered_by: users.find((u) => u.id === user.registered_by).username,
+                is_active: user.is_active
             }
         })
     }
@@ -100,12 +105,71 @@ app.get('/users', verifyToken , (req, res) => {
                 username : user.username,
                 email : user.email,
                 role : user.role,
-                registered_by: users.find((u) => u.id === user.registered_by).username
+                registered_by: users.find((u) => u.id === user.registered_by).username,
+                is_active: user.is_active
             }
         });
     }
 
     return res.status(200).json({ data : response || [] });
+})
+
+
+app.put('/deactivate-employee', verifyToken , (req,res)=>{
+    const { user_id } = req.body;
+    const current_user_role = req.user.role;
+    const user_to_deactivate = users.find((user) => user.id === user_id);
+    
+    if(current_user_role === 'admin' && user_to_deactivate.role == "superadmin"){
+        return res.status(400).json({ message: 'You are not authorized to deactivate a superadmin' });
+    }
+
+    if(current_user_role === 'admin' && user_to_deactivate.role == "admin"){
+        return res.status(400).json({ message: 'You are not authorized to deactivate an admin' });
+    }
+
+    user_to_deactivate.is_active = false;
+    fs.writeFileSync('./users.json', JSON.stringify({ users: users }, null, 2));
+    return res.status(200).json({ message: 'Employee deactivated successfully' });
+})
+
+app.get('/get-employee-details', verifyToken , (req,res)=>{
+    const user_id = parseInt(req.query.user_id);
+
+    const user_details = users.find((user) => user.id === user_id);
+
+    if(!user_details.is_active){
+        return res.status(400).json({ message: 'Employee is deactivated' , is_active : false });
+    }
+
+    return res.status(200).json({ message: 'Employee details' , data : {
+        id: user_details.id,
+        username: user_details.username,
+        email: user_details.email,
+        role: user_details.role,
+        registered_by: users.find((u) => u.id === user_details.registered_by).username,
+        is_active: user_details.is_active
+    } });
+
+    
+})
+
+app.put('/update-user-details', verifyToken , (req,res)=>{
+    const { user_id, username, email, role } = req.body;
+    // find the user in the users array
+    const user_details = users.find((user) => user.id === parseInt(user_id));
+
+    // check if the user is deactivated
+    if(!user_details.is_active){
+        return res.status(400).json({ message: 'Employee is deactivated' , is_active : false });
+    }
+
+    user_details.username = username;
+    user_details.email = email;
+    user_details.role = role;
+    fs.writeFileSync('./users.json', JSON.stringify({ users: users }, null, 2));
+
+    return res.status(200).json({ message: 'User details updated successfully' });
 })
 
 
