@@ -25,7 +25,7 @@
       "role": "emp",
       "id": 3,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "c",
@@ -34,7 +34,7 @@
       "role": "emp",
       "id": 4,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "d",
@@ -52,7 +52,7 @@
       "role": "emp",
       "id": 6,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "m",
@@ -61,7 +61,7 @@
       "role": "emp",
       "id": 7,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "h",
@@ -70,7 +70,7 @@
       "role": "emp",
       "id": 8,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "g",
@@ -79,7 +79,7 @@
       "role": "emp",
       "id": 9,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "ad",
@@ -97,7 +97,7 @@
       "role": "emp",
       "id": 11,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "ankit",
@@ -106,7 +106,7 @@
       "role": "emp",
       "id": 12,
       "registered_by": 2,
-      "is_active": false
+      "is_active": true
     },
     {
       "username": "ankit",
