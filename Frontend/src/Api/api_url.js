@@ -1,1 +1,1 @@
-export const apiUrl = 'https://employee-management-ymgg-git-main-ankits-projects-9a773d47.vercel.app'
+export const apiUrl = 'https://employee-management-ymgg.vercel.app'
