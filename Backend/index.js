@@ -9,6 +9,10 @@ app.use(cors({
     origin: '*',
 }));
 
+app.get('/', (req,res)=>{
+    return res.status(200).send('Welcome to the Employee Management System');
+})
+
 const users = require('./users.json').users;
 const fs = require('fs');
 
